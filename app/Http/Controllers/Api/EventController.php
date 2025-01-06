@@ -3,52 +3,80 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Event;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    // Afficher la liste des événements
     public function index()
     {
-        return Event::with('category')->get();
+        $events = Event::with('category')->paginate(10);
+        return view('events.index', compact('events'));
     }
 
-    public function show(Event $event)
+    // Afficher le formulaire pour créer un nouvel événement
+    public function create()
     {
-        return $event->load('category');
+        $categories = Category::all();
+        return view('events.create', compact('categories'));
     }
 
+    // Stocker un nouvel événement
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'required',
+            'description' => 'required',
             'date' => 'required|date',
-            'location' => 'required|string|max:255',
-            'category_id' => 'required|integer|exists:categories,id',
+            'location' => 'required',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        return Event::create($request->all());
+        Event::create($request->all());
+
+        return redirect()->route('events.index')->with('success', 'Événement créé avec succès.');
     }
 
-    public function update(Request $request, Event $event)
+    // Afficher un événement spécifique
+    public function show($id)
+    {
+        $event = Event::with('category')->findOrFail($id);
+        return view('events.show', compact('event'));
+    }
+
+    // Afficher le formulaire pour éditer un événement
+    public function edit($id)
+    {
+        $event = Event::findOrFail($id);
+        $categories = Category::all();
+        return view('events.edit', compact('event', 'categories'));
+    }
+
+    // Mettre à jour un événement
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'required',
+            'description' => 'required',
             'date' => 'required|date',
-            'location' => 'required|string|max:255',
-            'category_id' => 'required|integer|exists:categories,id',
+            'location' => 'required',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
+        $event = Event::findOrFail($id);
         $event->update($request->all());
 
-        return $event;
+        return redirect()->route('events.index')->with('success', 'Événement mis à jour avec succès.');
     }
 
-    public function destroy(Event $event)
+    // Supprimer un événement
+    public function destroy($id)
     {
+        $event = Event::findOrFail($id);
         $event->delete();
-        return response()->noContent();
+
+        return redirect()->route('events.index')->with('success', 'Événement supprimé avec succès.');
     }
 }
 
