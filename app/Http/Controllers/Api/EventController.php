@@ -1,64 +1,54 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
+use App\Models\Event;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return Event::with('category')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function show(Event $event)
+    {
+        return $event->load('category');
+    }
+
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'date' => 'required|date',
+            'location' => 'required|string|max:255',
+            'category_id' => 'required|integer|exists:categories,id',
+        ]);
+
+        return Event::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(Request $request, Event $event)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'date' => 'required|date',
+            'location' => 'required|string|max:255',
+            'category_id' => 'required|integer|exists:categories,id',
+        ]);
+
+        $event->update($request->all());
+
+        return $event;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Event $event)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $event->delete();
+        return response()->noContent();
     }
 }
+

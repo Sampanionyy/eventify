@@ -1,64 +1,31 @@
 <?php
+    namespace App\Http\Controllers\Api;
 
-namespace App\Http\Controllers\Api;
+    use App\Models\Reservation;
+    use App\Models\Event;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-class ReservationController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    class ReservationController extends Controller
     {
-        //
-    }
+        public function index()
+        {
+            return Reservation::with('user', 'event')->get();
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        public function store(Request $request)
+        {
+            $request->validate([
+                'user_id' => 'required|integer|exists:users,id',
+                'event_id' => 'required|integer|exists:events,id',
+            ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+            return Reservation::create($request->all());
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        public function destroy(Reservation $reservation)
+        {
+            $reservation->delete();
+            return response()->noContent();
+        }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-}
