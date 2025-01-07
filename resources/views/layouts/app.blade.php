@@ -28,7 +28,7 @@
                 <a href="/" class="text-white hover:text-gray-300">Accueil</a>
                 <a href="{{ route('events.index') }}" class="text-white hover:text-gray-300 no-underline">Événements</a>
                 <a href="{{ route('reservations.index') }}" class="text-white hover:text-gray-300">Réservations</a>
-                <!-- Ajouter d'autres liens ici selon les besoins -->
+                <a href="{{ route('categories.index') }}" class="text-white hover:text-gray-300">Catégories</a>
             </div>
         </div>
     </nav>
@@ -38,7 +38,7 @@
         <a href="/" class="block px-4 py-2 hover:bg-gray-700">Accueil</a>
         <a href="{{ route('events.index') }}" class="block px-4 py-2 hover:bg-gray-700">Événements</a>
         <a href="{{ route('reservations.index') }}" class="block px-4 py-2 hover:bg-gray-700">Réservations</a>
-        <!-- Ajouter d'autres liens ici selon les besoins -->
+        <a href="{{ route('categories.index') }}" class="block px-4 py-2 hover:bg-gray-700">Catégories</a>
     </div>
 
     <div class="container mx-auto mt-6">
@@ -46,7 +46,6 @@
     </div>
 
     <script>
-        // Menu toggle script
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
 

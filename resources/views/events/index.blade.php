@@ -11,7 +11,7 @@
                 <tr>
                     <th class="px-4 py-2 text-left">Titre</th>
                     <th class="px-4 py-2 text-left">Catégorie</th>
-                    <th class="px-4 py-2 text-left">Date</th>
+                    {{-- <th class="px-4 py-2 text-left">Date</th> --}}
                     <th class="px-4 py-2 text-left">Actions</th>
                 </tr>
             </thead>
@@ -20,7 +20,7 @@
                     <tr>
                         <td class="border px-4 py-2">{{ $event->title }}</td>
                         <td class="border px-4 py-2">{{ $event->category->name }}</td>
-                        <td class="border px-4 py-2">{{ $event->date->format('d/m/Y') }}</td>
+                        {{-- <td class="border px-4 py-2">{{ $event->date->format('d/m/Y') }}</td> --}}
                         <td class="border px-4 py-2">
                             <a href="{{ route('events.show', $event->id) }}" class="text-cyan-600">Voir</a>
                             <a href="{{ route('events.edit', $event->id) }}" class="text-cyan-600 ml-4">Modifier</a>

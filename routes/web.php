@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\ReservationController;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,6 @@ Route::get('/', function () {
 });
 
 Route::resource('events', EventController::class);
-Route::resource('reservations', ReservationController::class)->only(['index', 'destroy']);
+Route::resource('reservations', ReservationController::class);
+Route::resource('categories', CategoryController::class);
+
