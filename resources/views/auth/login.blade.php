@@ -1,47 +1,40 @@
-<x-guest-layout>
-    <!-- Statut de session -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@vite('resources/css/app.css')
+<div class="min-h-screen bg-gradient-to-b from-sky-100 to-white flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <form method="POST" action="{{ route('login') }}" class="bg-white p-8 rounded-2xl shadow-lg">
+            @csrf
+            
+            <!-- Icon -->
+            <div class="mb-6 text-center">
+                <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-xs">
+                    Eventify
+                </div>
+                <h2 class="text-xl font-semibold text-gray-900">Se connecter avec vos données</h2>
+                <p class="mt-2 text-sm text-gray-600">Pour réserver vos évenements avec toute sécurité. Tout ça gratuitement</p>
+            </div>
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+            <div class="mb-4">
+                <input id="email" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200" 
+                       type="email" name="email" placeholder="Email" :value="old('email')" required autofocus />
+                <error :messages="$errors->get('email')" class="text-sm text-red-500 mt-1" />
+            </div>
 
-        <div>
-            <x-input-label for="email" :value="'Adresse Email'" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+            <div class="mb-4">
+                <input id="password" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200" 
+                       type="password" name="password" placeholder="Password" required />
+                <error :messages="$errors->get('password')" class="text-sm text-red-500 mt-1" />
+            </div>
 
-        <!-- Mot de passe -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="'Mot de passe'" />
+            <button type="submit" class="w-full py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors">
+                Se connecter
+            </button>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Se souvenir de moi -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded bg-gray-100 border-gray-300 text-orange-600 shadow-sm focus:ring-orange-500" name="remember">
-                <span class="ml-2 text-sm text-gray-700">Se souvenir de moi</span>
-            </label>
-        </div>
-
-        <!-- Liens et Bouton -->
-        <div class="flex items-center justify-between mt-6">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-orange-600 hover:text-orange-800" href="{{ route('password.request') }}">
-                    Mot de passe oublié ?
+            <div class="text-center mt-4 mb-2">
+                <a class="text-sm text-gray-600 hover:text-gray-800" href="{{ route('register') }}">
+                    Vous n'avez pas encore de compte? Créez-en un
                 </a>
-            @endif
+            </div>
 
-            <x-primary-button class="ml-3 bg-orange-600 hover:bg-orange-700 text-white">
-                Connexion
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+        </form>
+    </div>
+</div>

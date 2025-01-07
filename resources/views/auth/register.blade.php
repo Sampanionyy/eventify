@@ -1,73 +1,80 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@vite('resources/css/app.css')
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirmer le mot de passe')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="mt-4">
-            <span>Cochez si admin</span>
-            <input type="checkbox" name="is_admin" class="is_admin" onchange="cocherBtnAdmin(this)"/>
-        </div>
-
-        <div class="mt-4" id="input_secret" hidden>
-            <x-input-label for="secret_key" :value="__('Code secret')" />
-            <x-text-input id="secret_key" class="block mt-1 w-full"
-                            type="password"
-                            name="secret_key"
-                            required 
-                            oninput="validateSecretKey()" />
-            <x-input-error :messages="$errors->get('')" class="mt-2" />
-            <div id="error-message" class="text-red-500 mt-2" style="display: none;">
-                Le code secret est incorrect.
+<div class="min-h-screen bg-gradient-to-b from-sky-100 to-white flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <form method="POST" action="{{ route('register') }}" class="bg-white p-8 rounded-2xl shadow-lg">
+            @csrf
+            
+            <!-- Icon & Title -->
+            <div class="mb-6 text-center">
+                <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6 text-gray-600" viewBox="0 0 24 24" fill="none">
+                        <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-900">Créer votre compte</h2>
+                <p class="mt-2 text-sm text-gray-600">Nous joindre pour commencer</p>
             </div>
-        </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+            <!-- Name -->
+            <div class="mb-4">
+                <input id="name" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200" 
+                    type="text" name="name" placeholder="Noms" :value="old('name')" required autofocus />
+                <error :messages="$errors->get('name')" class="text-sm text-red-500 mt-1" />
+            </div>
 
-            <x-primary-button class="ml-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <!-- Email -->
+            <div class="mb-4">
+                <input id="email" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200" 
+                    type="email" name="email" placeholder="Email" :value="old('email')" required />
+                <error :messages="$errors->get('email')" class="text-sm text-red-500 mt-1" />
+            </div>
+
+            <!-- Password -->
+            <div class="mb-4">
+                <input id="password" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200" 
+                    type="password" name="password" placeholder="Mot de passe" required />
+                <error :messages="$errors->get('password')" class="text-sm text-red-500 mt-1" />
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-4">
+                <input id="password_confirmation" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200" 
+                    type="password" name="password_confirmation" placeholder="Confirmer le mot de passe" required />
+                <error :messages="$errors->get('password_confirmation')" class="text-sm text-red-500 mt-1" />
+            </div>
+
+            <!-- Admin Checkbox -->
+            <div class="mb-4 flex items-center">
+                <input type="checkbox" name="is_admin" class="is_admin w-4 h-4 text-gray-600 border-gray-300 rounded" onchange="cocherBtnAdmin(this)"/>
+                <span class="ml-2 text-sm text-gray-600">Administrateur?</span>
+            </div>
+
+            <!-- Secret Key -->
+            <div class="mb-4" id="input_secret" hidden>
+                <input id="secret_key" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-200" 
+                    type="password" name="secret_key" placeholder="Code secret" oninput="validateSecretKey()" />
+                <div id="error-message" class="text-sm text-red-500 mt-1" style="display: none;">
+                    Code secret invalide.
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button type="submit" class="w-full py-3 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors">
+                    Nous joindre
+                </button>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a class="text-sm text-gray-600 hover:text-gray-800" href="{{ route('login') }}">
+                    Avez-vous déjà un compte? Se connecter
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     const cocherBtnAdmin = (val) => {
         const secretKeyField = document.getElementById("input_secret");
@@ -84,26 +91,22 @@
         const secretKeyValue = secretKeyInput.value;
 
         if (document.getElementById("input_secret").hasAttribute("hidden")) {
-            // Si le champ "secret_key" est caché, pas de validation
             errorMessage.style.display = 'none';
-            return true; // Le champ secret_key n'est pas obligatoire
+            return true;
         }
 
-        // Si le champ est visible et que la valeur est incorrecte
         if (secretKeyValue !== '9A0aI|3pDr#') {
-            errorMessage.style.display = 'block';  // Affiche l'erreur
-            return false; // Ne permet pas l'envoi du formulaire
+            errorMessage.style.display = 'block';
+            return false;
         } else {
-            errorMessage.style.display = 'none';  // Cache l'erreur si correct
-            return true; // Permet l'envoi du formulaire
+            errorMessage.style.display = 'none';
+            return true;
         }
     }
 
-    // Empêcher la soumission du formulaire si secret_key est incorrect
     document.querySelector('form').addEventListener('submit', function(e) {
         if (!validateSecretKey()) {
-            e.preventDefault(); // Empêche l'envoi du formulaire si la validation échoue
+            e.preventDefault();
         }
     });
 </script>
-
