@@ -84,18 +84,26 @@ class EventController extends Controller
 
     public function reserve(Request $request, Event $event)
     {
-        // Vérifiez si des places sont disponibles
+        $existingReservation = $event->reservations()->where('user_id', auth()->id())->first();
+
+        if ($existingReservation) {
+            return redirect()->back()->with('error', 'Vous avez déjà réservé pour cet événement.');
+        }
+
         if ($event->available_seats <= 0) {
             return redirect()->back()->with('error', 'Aucune place disponible pour cet événement.');
         }
 
-        // Créez une réservation
-        $reservation = $event->reservations()->create([
-            'user_id' => auth()->id(),
+        $request->validate([
+            'quantity' => 'required|integer|min:1|max:' . $event->available_seats,
         ]);
 
-        // Réduisez le nombre de places disponibles
-        $event->decrement('available_seats');
+        $event->reservations()->create([
+            'user_id' => auth()->id(),
+            'total' => $request->quantity
+        ]);
+
+        $event->decrement('available_seats', $request->quantity);
 
         return redirect()->route('events.details', $event->id)
             ->with('success', 'Votre réservation a été effectuée avec succès.');
