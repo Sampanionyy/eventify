@@ -5,6 +5,7 @@ use App\Models\Event;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -20,38 +21,48 @@ class EventController extends Controller
         return view('events.list', compact('events'));
     }
 
-    // Afficher le formulaire pour créer un nouvel événement
     public function create()
     {
         $categories = Category::all();
         return view('events.create', compact('categories'));
     }
 
-    // Stocker un nouvel événement
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required',
             'description' => 'required',
             'date' => 'required|date',
             'location' => 'required',
             'total' => 'required',
             'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        Event::create($request->all());
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/images');
+        }
+
+        Event::create([
+            'title' => $validated['title'],
+            'date' => $validated['date'],
+            'description' => $validated['description'],
+            'location' => $validated['location'],
+            'total' => $validated['total'],
+            'category_id' => $validated['category_id'],
+            'image_url' => $imagePath,
+        ]);
 
         return redirect()->route('events.index')->with('success', 'Événement créé avec succès.');
     }
 
-    // Afficher un événement spécifique
     public function show($id)
     {
         $event = Event::with('category')->findOrFail($id);
         return view('events.show', compact('event'));
     }
 
-    // Afficher le formulaire pour éditer un événement
     public function edit($id)
     {
         $event = Event::findOrFail($id);
@@ -59,22 +70,41 @@ class EventController extends Controller
         return view('events.edit', compact('event', 'categories'));
     }
 
-    // Mettre à jour un événement
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required',
             'description' => 'required',
             'location' => 'required',
             'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
         $event = Event::find($id);
-        $event->update($request->all());
+
+        if ($request->hasFile('image')) {
+            if ($event->image_url) {
+                Storage::delete($event->image_url);
+            }
+    
+            $imagePath = $request->file('image')->store('public/images');
+        } else {
+            $imagePath = $event->image_url;
+        }
+
+        $event->update([
+            'title' => $validated['title'],
+            'date' => $validated['date'],
+            'description' => $validated['description'],
+            'location' => $validated['location'],
+            'total' => $validated['total'],
+            'category_id' => $validated['category_id'],
+            'image_url' => $imagePath,
+        ]);
 
         return redirect()->route('events.index')->with('success', 'Événement mis à jour avec succès.');
     }
 
-    // Supprimer un événement
     public function destroy($id)
     {
         $event = Event::findOrFail($id);

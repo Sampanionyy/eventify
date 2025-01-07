@@ -6,7 +6,7 @@
     <h1 class="text-3xl font-bold text-gray-800">Créer un nouvel événement</h1>
 
     <div class="mt-6">
-        <form action="{{ route('events.store') }}" method="POST">
+        <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-4">
@@ -41,6 +41,11 @@
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="image" class="block text-gray-700">Image de l'événement</label>
+                <input type="file" name="image" id="image" class="mt-2 block w-full">
             </div>
 
             <button type="submit" class="bg-cyan-600 text-white px-4 py-2 rounded-lg">Créer</button>

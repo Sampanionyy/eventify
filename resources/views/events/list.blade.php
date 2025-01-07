@@ -8,7 +8,7 @@
             @foreach ($events as $event)
                 <div class="bg-white shadow-md rounded-lg overflow-hidden">
                     <img 
-                        src="{{ $event->image_url ?? asset('images/default-event.jpg') }}" 
+                        src="{{ $event->image_url ?? asset('images/default.jpeg') }}" 
                         alt="Image de l'événement" 
                         class="w-full h-48 object-cover"
                     >

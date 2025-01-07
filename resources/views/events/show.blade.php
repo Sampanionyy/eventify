@@ -7,10 +7,10 @@
         <div class="mt-6 bg-white p-6 shadow-md rounded-lg">
             <div class="mb-4">
                 <!-- Affichage de l'image de l'événement si disponible -->
-                @if($event->image)
-                    <img src="{{ asset('storage/'.$event->image) }}" alt="{{ $event->title }}" class="w-full h-64 object-cover rounded-lg mb-4">
+                @if($event->image_url)
+                    <img src="{{ asset('storage/'.$event->image_url) }}" alt="{{ $event->title }}" class="w-full h-64 object-cover rounded-lg mb-4">
                 @else
-                    <img src="https://via.placeholder.com/600x400" alt="Image par défaut" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <img src="{{asset('images/default.jpeg')}}" alt="Image par défaut" class="w-full h-64 object-cover rounded-lg mb-4">
                 @endif
             </div>
 
