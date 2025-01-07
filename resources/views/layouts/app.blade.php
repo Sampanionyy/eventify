@@ -36,6 +36,8 @@
                         <a href="/" class="text-white hover:text-gray-300">Accueil</a>
                         <a href="{{ route('events.list') }}" class="text-white hover:text-gray-300">Événements</a>
                         <a href="{{ route('reservations.my') }}" class="text-white hover:text-gray-300">Mes Réservations</a>
+                        <a href="{{ route('profile.edit') }}" class="text-white hover:text-gray-300">Mon profil</a>
+
                     @endif
                     <a href="{{ route('logout') }}" class="text-white hover:text-gray-300"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -62,6 +64,7 @@
                 <a href="/" class="block px-4 py-2 hover:bg-gray-700">Accueil</a>
                 <a href="{{ route('events.index') }}" class="block px-4 py-2 hover:bg-gray-700">Événements</a>
                 <a href="{{ route('reservations.index') }}" class="block px-4 py-2 hover:bg-gray-700">Mes Réservations</a>
+                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-gray-700">Mon profil</a>
             @endif
             <a href="{{ route('logout') }}" class="block px-4 py-2 hover:bg-gray-700"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
