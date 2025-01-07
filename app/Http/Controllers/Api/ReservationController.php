@@ -5,6 +5,7 @@
     use App\Models\Event;
     use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
+use App\Models\User;
 
     class ReservationController extends Controller
     {
@@ -73,10 +74,9 @@
         }
 
 
-        // public function myReservations()
-        // {
-        //     $reservations = auth()->user()->reservations()->with('event')->get();
-        //     return view('reservations.my', compact('reservations'));
-        // }
-
+        public function myReservations()
+        {
+            $reservations = auth()->user()->reservations()->with('event')->get();
+            return view('reservations.my', compact('reservations'));
+        }
     }

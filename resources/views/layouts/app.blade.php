@@ -26,16 +26,16 @@
             <!-- Navigation links -->
             <div id="menu" class="hidden lg:flex space-x-4">
                 @auth
-                    @if(auth()->user()->role === 'admin')
+                    @if(auth()->user()->role === 'ADMIN')
                         <a href="/" class="text-white hover:text-gray-300">Accueil</a>
                         <a href="{{ route('events.index') }}" class="text-white hover:text-gray-300">Événements</a>
                         <a href="{{ route('reservations.index') }}" class="text-white hover:text-gray-300">Réservations</a>
                         <a href="{{ route('categories.index') }}" class="text-white hover:text-gray-300">Catégories</a>
                         <a href="{{ route('users.index') }}" class="text-white hover:text-gray-300">Utilisateurs</a>
-                    @elseif(auth()->user()->role === 'client')
+                    @elseif(auth()->user()->role == 'CLIENT')
                         <a href="/" class="text-white hover:text-gray-300">Accueil</a>
-                        <a href="{{ route('events.index') }}" class="text-white hover:text-gray-300">Événements</a>
-                        <a href="{{ route('reservations.index') }}" class="text-white hover:text-gray-300">Mes Réservations</a>
+                        <a href="{{ route('events.list') }}" class="text-white hover:text-gray-300">Événements</a>
+                        <a href="{{ route('reservations.my') }}" class="text-white hover:text-gray-300">Mes Réservations</a>
                     @endif
                     <a href="{{ route('logout') }}" class="text-white hover:text-gray-300"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -52,13 +52,13 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="lg:hidden bg-gray-800 text-white space-y-2 pt-4 pb-2 hidden">
         @auth
-            @if(auth()->user()->role === 'admin')
+            @if(auth()->user()->role === 'ADMIN')
                 <a href="/" class="block px-4 py-2 hover:bg-gray-700">Accueil</a>
                 <a href="{{ route('events.index') }}" class="block px-4 py-2 hover:bg-gray-700">Événements</a>
                 <a href="{{ route('reservations.index') }}" class="block px-4 py-2 hover:bg-gray-700">Réservations</a>
                 <a href="{{ route('categories.index') }}" class="block px-4 py-2 hover:bg-gray-700">Catégories</a>
                 <a href="{{ route('users.index') }}" class="block px-4 py-2 hover:bg-gray-700">Utilisateurs</a>
-            @elseif(auth()->user()->role === 'client')
+            @elseif(auth()->user()->role === 'CLIENT')
                 <a href="/" class="block px-4 py-2 hover:bg-gray-700">Accueil</a>
                 <a href="{{ route('events.index') }}" class="block px-4 py-2 hover:bg-gray-700">Événements</a>
                 <a href="{{ route('reservations.index') }}" class="block px-4 py-2 hover:bg-gray-700">Mes Réservations</a>
@@ -79,6 +79,18 @@
     </form>
 
     <div class="container mx-auto mt-6">
+        @if (session('success'))
+            <div class="bg-green-500 text-white p-4 rounded-md mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-red-500 text-white p-4 rounded-md mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @yield('content')
     </div>
 

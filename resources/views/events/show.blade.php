@@ -11,8 +11,18 @@
             <p><strong>Lieu :</strong> {{ $event->location }}</p>
             <p><strong>Catégorie :</strong> {{ $event->category->name }}</p>
             <div class="mt-4">
-                <a href="{{ route('events.index') }}" class="bg-cyan-600 text-white px-4 py-2 rounded">Retour à la liste</a>
-                <a href="{{ route('events.edit', $event->id) }}" class="bg-cyan-600 text-white px-4 py-2 rounded ml-4">Modifier</a>
+                @if(auth()->user()->role === 'ADMIN')
+                    <a href="{{ route('events.index') }}" class="bg-cyan-600 text-white px-4 py-2 rounded">Retour à la liste</a>
+                    <a href="{{ route('events.edit', $event->id) }}" class="bg-cyan-600 text-white px-4 py-2 rounded ml-1">Modifier</a>
+                @elseif(auth()->user()->role === 'CLIENT')
+                    <a href="{{ route('events.list') }}" class="bg-cyan-600 text-white px-4 py-2 rounded">Retour à la liste</a>
+                    <a 
+                        href="{{ route('events.reserve', $event->id) }}" 
+                        class="bg-cyan-600 text-white px-4 py-2 rounded ml-1"
+                    >
+                        Réserver
+                    </a>
+                @endif
             </div>
         </div>
     </div>

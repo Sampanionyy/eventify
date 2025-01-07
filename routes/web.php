@@ -27,6 +27,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/events/{event}/reserve', [EventController::class, 'reserve'])->name('events.reserve');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -40,6 +42,9 @@ Route::middleware(['auth', 'role:ADMIN'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:CLIENT'])->group(function () {
+    Route::get('list-events', [EventController::class, 'listEvents'])->name('events.list');
+    Route::get('details-events/{id}', [EventController::class, 'show'])->name('events.details');
+    Route::delete('my-reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
     Route::get('my-reservations', [ReservationController::class, 'myReservations'])->name('reservations.my');
 });
 

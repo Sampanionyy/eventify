@@ -15,6 +15,11 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
+    public function listEvents() {
+        $events = Event::with('category')->paginate(10);
+        return view('events.list', compact('events'));
+    }
+
     // Afficher le formulaire pour créer un nouvel événement
     public function create()
     {
@@ -75,6 +80,25 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('events.index')->with('success', 'Événement supprimé avec succès.');
+    }
+
+    public function reserve(Request $request, Event $event)
+    {
+        // Vérifiez si des places sont disponibles
+        if ($event->available_seats <= 0) {
+            return redirect()->back()->with('error', 'Aucune place disponible pour cet événement.');
+        }
+
+        // Créez une réservation
+        $reservation = $event->reservations()->create([
+            'user_id' => auth()->id(),
+        ]);
+
+        // Réduisez le nombre de places disponibles
+        $event->decrement('available_seats');
+
+        return redirect()->route('events.details', $event->id)
+            ->with('success', 'Votre réservation a été effectuée avec succès.');
     }
 }
 
