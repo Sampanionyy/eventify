@@ -61,8 +61,22 @@
         public function destroy($id)
         {
             $reservation = Reservation::findOrFail($id);
+
+            // Vérifiez si la réservation appartient au client connecté
+            if (auth()->user()->role !== 'ADMIN' && $reservation->user_id !== auth()->id()) {
+                abort(403, 'Action non autorisée.');
+            }
+
             $reservation->delete();
 
-            return redirect()->route('reservations.index')->with('success', 'Réservation supprimée avec succès.');
+            return redirect()->route('reservations.my')->with('success', 'Réservation supprimée.');
         }
+
+
+        // public function myReservations()
+        // {
+        //     $reservations = auth()->user()->reservations()->with('event')->get();
+        //     return view('reservations.my', compact('reservations'));
+        // }
+
     }

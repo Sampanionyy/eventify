@@ -25,21 +25,58 @@
 
             <!-- Navigation links -->
             <div id="menu" class="hidden lg:flex space-x-4">
-                <a href="/" class="text-white hover:text-gray-300">Accueil</a>
-                <a href="{{ route('events.index') }}" class="text-white hover:text-gray-300 no-underline">Événements</a>
-                <a href="{{ route('reservations.index') }}" class="text-white hover:text-gray-300">Réservations</a>
-                <a href="{{ route('categories.index') }}" class="text-white hover:text-gray-300">Catégories</a>
+                @auth
+                    @if(auth()->user()->role === 'admin')
+                        <a href="/" class="text-white hover:text-gray-300">Accueil</a>
+                        <a href="{{ route('events.index') }}" class="text-white hover:text-gray-300">Événements</a>
+                        <a href="{{ route('reservations.index') }}" class="text-white hover:text-gray-300">Réservations</a>
+                        <a href="{{ route('categories.index') }}" class="text-white hover:text-gray-300">Catégories</a>
+                        <a href="{{ route('users.index') }}" class="text-white hover:text-gray-300">Utilisateurs</a>
+                    @elseif(auth()->user()->role === 'client')
+                        <a href="/" class="text-white hover:text-gray-300">Accueil</a>
+                        <a href="{{ route('events.index') }}" class="text-white hover:text-gray-300">Événements</a>
+                        <a href="{{ route('reservations.index') }}" class="text-white hover:text-gray-300">Mes Réservations</a>
+                    @endif
+                    <a href="{{ route('logout') }}" class="text-white hover:text-gray-300"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Déconnexion
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="text-white hover:text-gray-300">Connexion</a>
+                    <a href="{{ route('register') }}" class="text-white hover:text-gray-300">Inscription</a>
+                @endauth
             </div>
         </div>
     </nav>
 
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="lg:hidden bg-gray-800 text-white space-y-2 pt-4 pb-2 hidden">
-        <a href="/" class="block px-4 py-2 hover:bg-gray-700">Accueil</a>
-        <a href="{{ route('events.index') }}" class="block px-4 py-2 hover:bg-gray-700">Événements</a>
-        <a href="{{ route('reservations.index') }}" class="block px-4 py-2 hover:bg-gray-700">Réservations</a>
-        <a href="{{ route('categories.index') }}" class="block px-4 py-2 hover:bg-gray-700">Catégories</a>
+        @auth
+            @if(auth()->user()->role === 'admin')
+                <a href="/" class="block px-4 py-2 hover:bg-gray-700">Accueil</a>
+                <a href="{{ route('events.index') }}" class="block px-4 py-2 hover:bg-gray-700">Événements</a>
+                <a href="{{ route('reservations.index') }}" class="block px-4 py-2 hover:bg-gray-700">Réservations</a>
+                <a href="{{ route('categories.index') }}" class="block px-4 py-2 hover:bg-gray-700">Catégories</a>
+                <a href="{{ route('users.index') }}" class="block px-4 py-2 hover:bg-gray-700">Utilisateurs</a>
+            @elseif(auth()->user()->role === 'client')
+                <a href="/" class="block px-4 py-2 hover:bg-gray-700">Accueil</a>
+                <a href="{{ route('events.index') }}" class="block px-4 py-2 hover:bg-gray-700">Événements</a>
+                <a href="{{ route('reservations.index') }}" class="block px-4 py-2 hover:bg-gray-700">Mes Réservations</a>
+            @endif
+            <a href="{{ route('logout') }}" class="block px-4 py-2 hover:bg-gray-700"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Déconnexion
+            </a>
+        @else
+            <a href="{{ route('login') }}" class="block px-4 py-2 hover:bg-gray-700">Connexion</a>
+            <a href="{{ route('register') }}" class="block px-4 py-2 hover:bg-gray-700">Inscription</a>
+        @endauth
     </div>
+
+    <!-- Logout Form -->
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+        @csrf
+    </form>
 
     <div class="container mx-auto mt-6">
         @yield('content')
