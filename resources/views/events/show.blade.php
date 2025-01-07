@@ -5,11 +5,21 @@
         <h1 class="text-2xl font-bold text-gray-900">Détails de l'Événement</h1>
 
         <div class="mt-6 bg-white p-6 shadow-md rounded-lg">
+            <div class="mb-4">
+                <!-- Affichage de l'image de l'événement si disponible -->
+                @if($event->image)
+                    <img src="{{ asset('storage/'.$event->image) }}" alt="{{ $event->title }}" class="w-full h-64 object-cover rounded-lg mb-4">
+                @else
+                    <img src="https://via.placeholder.com/600x400" alt="Image par défaut" class="w-full h-64 object-cover rounded-lg mb-4">
+                @endif
+            </div>
+
             <p><strong>Titre :</strong> {{ $event->title }}</p>
             <p><strong>Description :</strong> {{ $event->description }}</p>
             {{-- <p><strong>Date :</strong> {{ $event->date->format('d/m/Y') }}</p> --}}
             <p><strong>Lieu :</strong> {{ $event->location }}</p>
             <p><strong>Catégorie :</strong> {{ $event->category->name }}</p>
+            
             <div class="mt-4">
                 @if(auth()->user()->role === 'ADMIN')
                     <a href="{{ route('events.index') }}" class="bg-cyan-600 text-white px-4 py-2 rounded">Retour à la liste</a>
@@ -66,6 +76,5 @@
             const container = button.nextElementSibling; 
             container.classList.toggle('hidden'); 
         }
-        
     </script>
 @endsection

@@ -18,7 +18,7 @@
                         <td class="border px-4 py-2">{{ $reservation->event->title }}</td>
                         <td class="border px-4 py-2">{{ $reservation->event->date }}</td>
                         <td class="border px-4 py-2">
-                            <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST" class="inline-block">
+                            <form action="{{ route('reservations.delete', $reservation->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-600">Annuler</button>

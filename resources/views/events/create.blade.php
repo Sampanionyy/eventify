@@ -30,6 +30,11 @@
             </div>
 
             <div class="mb-4">
+                <label for="total" class="block text-gray-700">Nb de places dispo</label>
+                <input type="number" id="total" name="total" class="w-full px-4 py-2 border rounded-lg" required>
+            </div>
+
+            <div class="mb-4">
                 <label for="category_id" class="block text-gray-700">Catégorie</label>
                 <select id="category_id" name="category_id" class="w-full px-4 py-2 border rounded-lg" required>
                     @foreach ($categories as $category)

@@ -62,6 +62,14 @@ use App\Models\User;
         public function destroy($id)
         {
             $reservation = Reservation::findOrFail($id);
+            $reservation->delete();
+
+            return redirect()->route('reservations.index')->with('success', 'Réservation supprimée.');
+        }
+
+        public function delete($id)
+        {
+            $reservation = Reservation::findOrFail($id);
 
             // Vérifiez si la réservation appartient au client connecté
             if (auth()->user()->role !== 'ADMIN' && $reservation->user_id !== auth()->id()) {

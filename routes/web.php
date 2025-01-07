@@ -35,8 +35,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:ADMIN'])->group(function () {
+    // Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('users', UserController::class);
     Route::resource('events', EventController::class);
     Route::resource('reservations', ReservationController::class);
 });
@@ -44,7 +44,7 @@ Route::middleware(['auth', 'role:ADMIN'])->group(function () {
 Route::middleware(['auth', 'role:CLIENT'])->group(function () {
     Route::get('list-events', [EventController::class, 'listEvents'])->name('events.list');
     Route::get('details-events/{id}', [EventController::class, 'show'])->name('events.details');
-    Route::delete('my-reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+    Route::delete('my-reservations/{id}', [ReservationController::class, 'delete'])->name('reservations.delete');
     Route::get('my-reservations', [ReservationController::class, 'myReservations'])->name('reservations.my');
 });
 

@@ -35,6 +35,7 @@ class EventController extends Controller
             'description' => 'required',
             'date' => 'required|date',
             'location' => 'required',
+            'total' => 'required',
             'category_id' => 'required|exists:categories,id',
         ]);
 

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto px-6">
-        <h1 class="text-4xl font-extrabold text-gray-900 mt-6 mb-4">Découvrez nos Événements</h1>
+        <h1 class="text-4xl font-extrabold text-gray-900 mt-6 mb-4 text-center">Découvrez nos Événements</h1>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($events as $event)
@@ -15,8 +15,12 @@
                     <div class="p-4">
                         <h2 class="text-2xl font-semibold text-gray-800">{{ $event->title }}</h2>
                         <p class="text-gray-600 mt-2">
-                            Catégorie : <span class="font-medium">{{ $event->category->name }}</span>
+                            Catégorie : 
+                            <span class="font-medium">
+                                {{ $event->category ? $event->category->name : 'Aucune catégorie' }}
+                            </span>
                         </p>
+                        
                         <p class="text-gray-500 mt-2">
                             Date : <span class="font-medium">{{ $event->date }}</span>
                         </p>
